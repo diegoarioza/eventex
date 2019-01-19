@@ -39,7 +39,7 @@ class SubscribeTest(TestCase):
 
 class Subscribe_Post_Test(TestCase):
     def setUp(self):
-        data = {'name':'Diego','cpf':'12345678901', 'email':'asas@asass.ass', 'phone':'3453343435'}
+        data = {'name':'Diego','cpf':'12345678901', 'email':'diego@diego.com', 'phone':'3453343435'}
         self.resp = self.client.post('/inscricao/', data)
 
     def test_post(self):
@@ -64,7 +64,43 @@ class Subscribe_Post_Test(TestCase):
 
     def test_subscription_email_to(self):
         email = mail.outbox[0]
-        expect = ['contato@eventex.com.br', 'diego@diego.com']
+        expect = ['diego@diego.com']
 
         self.assertEqual(expect, email.to)
 
+
+    def test_subscription_email_body(self):
+        email = mail.outbox[0]
+
+        self.assertIn('Diego', email.body)
+
+class SubscribeInvalidPost(TestCase):
+    def setUp(self):
+        self.resp = self.client.post('/inscricao/', {})
+
+    def test_post(self):
+        self.assertEqual(200, self.resp.status_code)
+
+    def test_template(self):
+        self.assertTemplateUsed(self.resp, 'subscriptions/subscription_form.html')
+
+
+    def test_has_form(self):
+        form = self.resp.context['form']
+        self.assertIsInstance(form, SubscriptionForm)
+
+    def test_has_errors(self):
+        form = self.resp.context['form']
+        self.assertTrue(form.errors)
+
+
+class SubscribeSucessmessage(TestCase):
+    def setUp(self):
+        data = dict(name='Diego', cpf='3424324234', email='diego@sdsd.dsd', phone='4545435345')
+        self.resp = self.client.post('/inscricao/', data, follow=True)
+
+    def test_Message(self):
+        self.assertContains(self.resp, 'Inscricao realizada com Sucesso')
+
+    def test_subscriptionb_link(self):
+        self.assertContains(self.resp, 'href="/inscricao/"')
