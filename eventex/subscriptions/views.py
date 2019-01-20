@@ -1,4 +1,5 @@
-from django.http import HttpResponseRedirect, HttpResponse
+from django.conf import settings
+from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.core import mail
 from django.shortcuts import render
@@ -9,20 +10,33 @@ from eventex.subscriptions.forms import SubscriptionForm
 
 def subscribe(request):
     if request.method == 'POST':
-        form = SubscriptionForm(request.POST)
-        if form.is_valid():
-            form.full_clean()
-
-            body = render_to_string('subscriptions/subscription_email.txt', form.cleaned_data)
-            mail.send_mail('Confirmação de inscrição',
-                           body,
-                           'contato@eventex.com.br',
-                           [form.cleaned_data['email']])
-
-            messages.success(request, 'Inscricao realizada com Sucesso')
-            return HttpResponseRedirect('/inscricao/')
-        else:
-            return render(request, 'subscriptions/subscription_form.html', {'form': form})
+        return create(request)
     else:
-        context = {'form': SubscriptionForm()}
-        return render(request, 'subscriptions/subscription_form.html', context)
+        return new(request)
+
+
+def create(request):
+    if request.method == 'POST':
+        form = SubscriptionForm(request.POST)
+        if not form.is_valid():
+            return render(request, 'subscriptions/subscription_form.html', {'form': form})
+
+        # Send E-mail
+        template_name = 'subscriptions/subscription_email.txt'
+        context = form.cleaned_data
+        subject = 'Confirmação de inscrição'
+        from_ = settings.DEFAULT_FROM_EMAIL
+        to = form.cleaned_data['email']
+
+        body = render_to_string(template_name, context)
+        mail.send_mail(subject, body, from_, [from_, to])
+
+        # Success Feedback
+        messages.success(request, 'Inscricao realizada com Sucesso')
+        return HttpResponseRedirect('/inscricao/')
+
+
+
+def new(request):
+    context = {'form': SubscriptionForm()}
+    return render(request, 'subscriptions/subscription_form.html', context)
