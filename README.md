@@ -1,7 +1,7 @@
 # Eventex
 [![Build Status](https://travis-ci.org/diegoarioza/eventex.svg?branch=master)](https://travis-ci.org/diegoarioza/eventex)
 
-Sistemas de eventosavis-ci.org/diegoarioza/eventex.svg?branch=master)](https://travis-ci.org/diegoarioza/eventex)
+Sistemas de Eventos
 
 ## Como desernvolver
 1. Clone o repsityorio
