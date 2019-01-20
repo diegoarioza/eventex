@@ -3,7 +3,7 @@
 
 Sistemas de Eventos
 
-## Como desernvolver
+## Como desenvolver
 1. Clone o repsityorio
 2. Crie um venv com python 3.5
 3. Ative o venv
@@ -16,7 +16,7 @@ git clone https://github.com/diegoarioza/eventex.git wttd
 cd wttd
 python -m venv .wttd
 source .wwtd/bin/activate
-pip install -r install requirements.txt
+pip install -r install requirements-dev.txt
 cp contrib/env-sample .
 python manage.py test
 ```
