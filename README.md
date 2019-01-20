@@ -10,7 +10,7 @@ Sistemas de eventos
 5. Configure a instancia com o .env
 6. execute os testes
 
-```
+```console
 git clone https://github.com/diegoarioza/eventex.git wttd
 cd wttd
 python -m venv .wttd
