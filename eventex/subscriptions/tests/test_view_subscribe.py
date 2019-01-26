@@ -30,7 +30,7 @@ class SubscribeGet(TestCase):
         self.assertContains(self.resp, 'csrfmiddlewaretoke')
 
     def test_has_form(self):
-        '''Context must have subscriptiuon form'''
+        '''Context must have subscription form'''
         form = self.resp.context['form']
 
         self.assertIsInstance(form, SubscriptionForm)
