@@ -4,7 +4,7 @@
 Sistemas de Eventos
 
 ## Como desenvolver
-1. Clone o reposityorio
+1. Clone o repositorio
 2. Crie um venv com python 3.5
 3. Ative o venv
 4. Intale as dependencias
