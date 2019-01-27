@@ -32,8 +32,8 @@ def create(request):
         body = render_to_string(template_name, context)
         #mail.send_mail(subject, body, from_, [from_, to])
 
-        # improviso = form.cleaned_data.get('name')
-        # Subscription.objects.create(**{'name': improviso})
+        improviso = form.cleaned_data.get('name')
+        Subscription.objects.create(**{'name': improviso})
         # Success Feedback
         messages.success(request, 'Inscricao realizada com Sucesso')
         return HttpResponseRedirect('/inscricao/')
