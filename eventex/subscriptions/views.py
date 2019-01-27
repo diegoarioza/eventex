@@ -30,7 +30,10 @@ def create(request):
         to = form.cleaned_data['email']
 
         body = render_to_string(template_name, context)
-        mail.send_mail(subject, body, from_, [from_, to])
+        try:
+            mail.send_mail(subject, body, from_, [from_, to])
+        except:
+            pass
 
         improviso = form.cleaned_data.get('name')
         Subscription.objects.create(**{'name': improviso})
