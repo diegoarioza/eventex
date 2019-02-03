@@ -2,11 +2,13 @@ from django.core import mail
 from django.test import TestCase
 from eventex.subscriptions.forms import SubscriptionForm
 from eventex.subscriptions.models import Subscription
+import unittest
 
 
 class SubscribeGet(TestCase):
     def setUp(self):
         self.resp = self.client.get('/inscricao/')
+        # print(self.resp.context)
 
     def test_get(self):
         ''' must receive 200'''
@@ -50,6 +52,7 @@ class SubscribePostValid(TestCase):
 
     def test_post(self):
         self.assertEqual(302, self.resp.status_code)
+        self.assertRedirects(self.resp, '/inscricao/1/')
 
     def test_send_subscribe_email(self):
         self.assertEqual(1, len(mail.outbox))
@@ -79,7 +82,7 @@ class SubscribePostInvalid(TestCase):
     def test_dont_save_subscription(self):
         self.assertFalse(Subscription.objects.exists())
 
-
+@unittest.skip('To be removed.')
 class SubscribeSucessMessage(TestCase):
     def setUp(self):
         data = dict(name='Diego', cpf='3424324234', email='diego@sdsd.dsd', phone='4545435345')

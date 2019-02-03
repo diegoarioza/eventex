@@ -11,7 +11,6 @@ class SubscriptionModelTest(TestCase):
         )
         self.obj.save()
 
-
     def test_create(self):
         self.assertTrue(Subscription.objects.exists())
 

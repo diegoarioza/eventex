@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.contrib import messages
 from django.core import mail
 from django.shortcuts import render
@@ -36,10 +36,17 @@ def create(request):
             pass
 
         improviso = form.cleaned_data.get('name')
-        Subscription.objects.create(**{'name': improviso})
+        subscription = Subscription.objects.create(**{'name': improviso})
         # Success Feedback
         messages.success(request, 'Inscricao realizada com Sucesso')
-        return HttpResponseRedirect('/inscricao/')
+        return HttpResponseRedirect('/inscricao/{}/'.format(subscription.pk))
+
+def detail(request, pk):
+    try:
+        subscription = Subscription.objects.get(pk=pk)
+    except Subscription.DoesNotExist:
+        raise Http404
+    return render(request, 'subscriptions/subscription_detail.html', {'subscription': subscription})
 
 
 
